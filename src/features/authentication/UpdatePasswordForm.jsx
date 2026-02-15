@@ -1,17 +1,23 @@
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
-
 import { useUpdateUser } from "./useUpdateUser";
+import { useUser } from "./useUser";
 
 function UpdatePasswordForm() {
   const { updateUser, isUpdating } = useUpdateUser();
+  const { user } = useUser();
   const { register, getValues, handleSubmit, reset, formState } = useForm();
   const { errors } = formState;
 
   function onSubmit({ password }) {
+    if (user?.email === "darshan@example.com") {
+      toast.error("The demo user’s password can’t be changed.");
+      return;
+    }
     updateUser({ password }, { onSuccess: () => reset() });
   }
 
